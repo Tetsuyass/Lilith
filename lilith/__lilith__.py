@@ -3,8 +3,11 @@ Main file __lilith__.py
 -----------------------
 """
 
-def main():
-    print("Bonjour Tetsuya.")
+from lilith import Core
 
-if __name__ == "__lilith__":
+def main():
+    core = Core()
+    core.start_()
+
+if __name__ == "__main__":
     main()
