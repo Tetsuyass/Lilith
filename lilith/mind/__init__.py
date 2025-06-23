@@ -1,0 +1,3 @@
+"""
+Intelligence (AI, neuronal network)
+"""
