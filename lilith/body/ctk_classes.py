@@ -197,7 +197,7 @@ class LateralToolbar(ct.CTkFrame):
 
         self.buttons_frame = ButtonFrame(self)
         self.buttons_frame.grid(row=0, column=0, sticky="nsew")
-        self.img = ImageFrame(self, os.path.join(ROUTES["views/lilith"], "lilith_v1.png"), width=500, height=530)
+        self.img = ImageFrame(self, os.path.join(ROUTES["views/lilith"], "lilith_v1.png"), width=500, height=520, corner_radius=15)
         self.img.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
 class App(ct.CTk):
@@ -254,7 +254,7 @@ class App(ct.CTk):
         """Génère une réponse basée sur le message de l'utilisateur"""
         # Exemple simple - à remplacer par votre logique d'IA
         if "bonjour" in question.lower() or "salut" in question.lower():
-            return "Bonjour Tetusya, bien dormi ?"
+            return "Bonjour Tetsuya, bien dormi ?"
         elif "aide" in question.lower():
             return "Je peux t'aider pour tout ce que tu veux, précise moi ta question."
         elif "merci" in question.lower():
