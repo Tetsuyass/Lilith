@@ -1,4 +1,4 @@
-from lilith.body import (App)
+from . import (App)
 
 class Core:
     def __init__(self):

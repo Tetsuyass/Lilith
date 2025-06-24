@@ -1,4 +1,20 @@
 import customtkinter as ct
+from PIL import Image
+from customtkinter import CTkImage, CTkLabel
+from routes import ROUTES
+import os
+
+class ImageFrame(ct.CTkFrame):
+    def __init__(self, master, image_path, width=160, height=160, **kwargs):
+        super().__init__(master, width=width, height=height, **kwargs)
+        self.pack_propagate = False
+
+        img = Image.open(image_path)
+        self.ctk_img = CTkImage(light_image=img, size=(width, height))
+
+        self.img_label = CTkLabel(self, image=self.ctk_img, text="")
+        self.img_label.pack(expand=True, fill="both")
+
 
 class ChatFrame(ct.CTkFrame):
     def __init__(self, master):
@@ -13,7 +29,7 @@ class ChatFrame(ct.CTkFrame):
             fg_color=("gray95", "#1A1A1A"),
             text_color=("black","white"),
             corner_radius=10,
-            font=("Helvetica", 12),
+            font=("Helvetica", 20),
             wrap="word",
             padx=5,
             pady=5,
@@ -43,7 +59,7 @@ class ChatFrame(ct.CTkFrame):
             self.chat_display.insert("end", "\n\n")
 
         # ajout en-tête
-        self.chat_display.insert("end", "Tetsuya: ", "tetsuya")
+        self.chat_display.insert("end", "Tetsuya 乂 : ", "tetsuya")
         # contenu
         self.chat_display.insert("end", message, "tetsuya_message")
         self.chat_display.configure(state="disabled")
@@ -59,7 +75,7 @@ class ChatFrame(ct.CTkFrame):
         if self.chat_display.index("end-1c") != "1.0":
             self.chat_display.insert("end", "\n\n")
         # ajout en-tête
-        self.chat_display.insert("end", "Lilith: ", "lilith")
+        self.chat_display.insert("end", "Lilith ♥ : ", "lilith")
         # contenu
         self.chat_display.insert("end", message, "lilith_message")
         self.chat_display.configure(state="disabled")
@@ -100,6 +116,58 @@ class InputFrame(ct.CTkFrame):
             self.entry.delete(0, "end")  # Clean entry
             return "break"  # Empêche le comportement par défaut de la touche Return
 
+class ButtonFrame(ct.CTkFrame):
+    def __init__(self,master):
+        super().__init__(master)
+
+        padx_frame = (5,2)
+        pady_frame = 5
+
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure((0,1,2,3,4,5,6,7), weight=1)
+
+        self.menu_button = Button(master=self, value="Menu", command=self.menu_callback)
+        self.menu_button.grid(row=0, column=0, padx=padx_frame, pady=pady_frame, sticky="ew")
+        self.code_button = Button(master=self, value="Code", command=self.code_callback)
+        self.code_button.grid(row=1, column=0, padx=padx_frame, pady=pady_frame, sticky="ew")
+        self.image_button = Button(master=self, value="Images", command=self.image_callback)
+        self.image_button.grid(row=2, column=0, padx=padx_frame, pady=pady_frame, sticky="ew")
+        self.lilith_button = Button(master=self, value="Lilith", command=self.lilith_callback)
+        self.lilith_button.grid(row=3, column=0, padx=padx_frame, pady=pady_frame, sticky="ew")
+        self.discussion_button = Button(master=self, value="Discussion", command=self.discussion_callback)
+        self.discussion_button.grid(row=4, column=0, padx=padx_frame, pady=pady_frame, sticky="ew")
+        self.gestion_button = Button(master=self, value="Gestion fichiers", command=self.gestion_callback)
+        self.gestion_button.grid(row=5, column=0, padx=padx_frame, pady=pady_frame, sticky="ew")
+        self.envoi_button = Button(master=self, value="Envoi données", command=self.envoi_callback)
+        self.envoi_button.grid(row=6, column=0, padx=padx_frame, pady=pady_frame, sticky="ew")
+        self.crawl_button = Button(master=self, value="Crawling", command=self.crawl_callback)
+        self.crawl_button.grid(row=7, column=0, padx=padx_frame, pady=pady_frame, sticky="ew")
+
+    def menu_callback(self):
+        print("menu callback")
+
+    def code_callback(self):
+        print("code callback")
+
+    def image_callback(self):
+        print("image callback")
+
+    def lilith_callback(self):
+        print("lilith callback")
+
+    def discussion_callback(self):
+        print("discussion callback")
+
+    def gestion_callback(self):
+        print("gestion callback")
+
+    def envoi_callback(self):
+        print("envoi callback")
+
+    def crawl_callback(self):
+        print("crawl callback")
+
+
 class Button(ct.CTkButton):
     def __init__(self, master, value, command):
         super().__init__(master)
@@ -118,64 +186,19 @@ class Button(ct.CTkButton):
         )
 
 
-class TextZoneFrame(ct.CTkFrame):
-    def __init__(self, master, text):
-        super().__init__(master)
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(0, weight=1)
-
-        self.zone = TextZone(self)
-        self.zone.grid(row=0, column=0,
-                       sticky="nsew")
-        self.zone.insert(0.0, text)
-
-
-class TextZone(ct.CTkTextbox):
-    def __init__(self, master):
-        super().__init__(master)
-
-        self.configure(
-            fg_color=("black", "#000000"),
-            text_color=("white", "#FFFFFF"),
-            corner_radius=10,
-            font=('Cursive', 12, 'bold'),
-        )
-
-
 class LateralToolbar(ct.CTkFrame):
-    def __init__(self, master, width=200):
+    def __init__(self, master, width=300):
         super().__init__(master, width=width)
 
         #empecher le redimensionnement
         self.grid_propagate(False)
-
+        self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
-        self.checkbox_1 = ct.CTkCheckBox(self, text="checkbox 1")
-        self.checkbox_1.grid(row=0, column=0, padx=10, pady=(10, 0), sticky="w")
-        self.checkbox_2 = ct.CTkCheckBox(self, text="checkbox 2")
-        self.checkbox_2.grid(row=1, column=0, padx=10, pady=(10, 0), sticky="w")
-        self.checkbox_3 = ct.CTkCheckBox(self, text="checkbox 3")
-        self.checkbox_3.grid(row=2, column=0, padx=10, pady=(10, 0), sticky="w")
-
-    def get(self):
-        checked = []
-        if self.checkbox_1.get() == 1:
-            checked.append(self.checkbox_1.cget("text"))
-        if self.checkbox_2.get() == 1:
-            checked.append(self.checkbox_2.cget("text"))
-        if self.checkbox_3.get() == 1:
-            checked.append(self.checkbox_3.cget("text"))
-        return checked
-
-    def menu(self):
-        print("Bouton menu pressé.")
-
-    def settings(self):
-        print("Bouton paramètres pressé.")
-
-    def history(self):
-        print("Bouton historique pressé")
+        self.buttons_frame = ButtonFrame(self)
+        self.buttons_frame.grid(row=0, column=0, sticky="nsew")
+        self.img = ImageFrame(self, os.path.join(ROUTES["views/lilith"], "lilith_v1.png"), width=500, height=530)
+        self.img.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
 class App(ct.CTk):
     def __init__(self, text="Bonjour Tetsuya."):
@@ -183,7 +206,7 @@ class App(ct.CTk):
 
         self.text_zone_text = text
         self.title("Lilith ♥")
-        self.geometry("700x600")
+        self.geometry("1200x800")
 
         # Utiliser pack au lieu de grid pour le layout principal
 
@@ -216,7 +239,7 @@ class App(ct.CTk):
 
         # Zone d'entrée
         self.input_frame = InputFrame(self.chat_input_frame, self.process_message)
-        self.input_frame.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
+        self.input_frame.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
 
     def process_message(self, question):
         """point d'entrée pour la réponse de Lilith"""

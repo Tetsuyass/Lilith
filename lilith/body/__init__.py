@@ -7,5 +7,5 @@ from .core import Core
 
 __all__ = [
     "App",
-    "Core"
+    "Core",
 ]
