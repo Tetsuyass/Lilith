@@ -6,10 +6,42 @@ Idées :
 Si besoin de plusieurs modèles en même temps, pensez à implémenter un système de queue, en fonction de la priorisation que la fonction
 qui se charge de l'analyse du contexte aura délivrée.
 """
+from idlelib import query
+
+from routes import ROUTES
+
 
 ########################################################################################################################
 ######################################## // Détéction de la tâche // ###################################################
 ########################################################################################################################
+
+def task_handler(int: value):
+    match value:
+        case 1:
+            crawl_handler()
+        case 2:
+            code_handler()
+        case 3:
+            discussion_handler()
+        case 4:
+            fichiers_handler()
+        case 5:
+            images_handler()
+
+def crawl_handler():
+    pass
+
+def code_handler():
+    pass
+
+def discussion_handler():
+    pass
+
+def gestion_file_handler():
+    pass
+
+def images_handler():
+    pass
 
 ########################################################################################################################
 ########################################## // Appel du bon modèle // ###################################################

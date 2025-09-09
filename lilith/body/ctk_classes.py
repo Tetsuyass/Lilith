@@ -7,7 +7,7 @@ import os
 class ImageFrame(ct.CTkFrame):
     def __init__(self, master, image_path, width=160, height=160, **kwargs):
         super().__init__(master, width=width, height=height, **kwargs)
-        self.pack_propagate = False
+        self.pack_propagate(False)
 
         img = Image.open(image_path)
         self.ctk_img = CTkImage(light_image=img, size=(width, height))
@@ -117,8 +117,9 @@ class InputFrame(ct.CTkFrame):
             return "break"  # Empêche le comportement par défaut de la touche Return
 
 class ButtonFrame(ct.CTkFrame):
-    def __init__(self,master):
+    def __init__(self,master,chat_frame):
         super().__init__(master)
+        self.chat_frame = chat_frame
 
         padx_frame = (5,2)
         pady_frame = 5
@@ -126,14 +127,11 @@ class ButtonFrame(ct.CTkFrame):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure((0,1,2,3,4,5,6,7), weight=1)
 
-        self.menu_button = Button(master=self, value="Menu", command=self.menu_callback)
-        self.menu_button.grid(row=0, column=0, padx=padx_frame, pady=pady_frame, sticky="ew")
+
         self.code_button = Button(master=self, value="Code", command=self.code_callback)
         self.code_button.grid(row=1, column=0, padx=padx_frame, pady=pady_frame, sticky="ew")
         self.image_button = Button(master=self, value="Images", command=self.image_callback)
         self.image_button.grid(row=2, column=0, padx=padx_frame, pady=pady_frame, sticky="ew")
-        self.lilith_button = Button(master=self, value="Lilith", command=self.lilith_callback)
-        self.lilith_button.grid(row=3, column=0, padx=padx_frame, pady=pady_frame, sticky="ew")
         self.discussion_button = Button(master=self, value="Discussion", command=self.discussion_callback)
         self.discussion_button.grid(row=4, column=0, padx=padx_frame, pady=pady_frame, sticky="ew")
         self.gestion_button = Button(master=self, value="Gestion fichiers", command=self.gestion_callback)
@@ -143,28 +141,37 @@ class ButtonFrame(ct.CTkFrame):
         self.crawl_button = Button(master=self, value="Crawling", command=self.crawl_callback)
         self.crawl_button.grid(row=7, column=0, padx=padx_frame, pady=pady_frame, sticky="ew")
 
-    def menu_callback(self):
-        print("menu callback")
+
+#########################################" CALLBACKS "#####################################################
 
     def code_callback(self):
+        self.chat_frame.clear_chat()
+        self.chat_frame.add_lilith_message(message="Tu as choisi l'option pour des questions de code.")
         print("code callback")
 
     def image_callback(self):
+        self.chat_frame.clear_chat()
+        self.chat_frame.add_lilith_message(message="Tu as choisi l'option pour des questions de images.")
         print("image callback")
 
-    def lilith_callback(self):
-        print("lilith callback")
-
     def discussion_callback(self):
+        self.chat_frame.clear_chat()
+        self.chat_frame.add_lilith_message(message="Tu as choisi l'option pour une discussion avec moi.")
         print("discussion callback")
 
     def gestion_callback(self):
+        self.chat_frame.clear_chat()
+        self.chat_frame.add_lilith_message(message="Tu as choisi l'option de gestion de fichiers.")
         print("gestion callback")
 
     def envoi_callback(self):
+        self.chat_frame.clear_chat()
+        self.chat_frame.add_lilith_message(message="Tu as choisi l'option pour l'envoi de données.")
         print("envoi callback")
 
     def crawl_callback(self):
+        self.chat_frame.clear_chat()
+        self.chat_frame.add_lilith_message(message="Tu as choisi l'option pour du crawl sur le web.")
         print("crawl callback")
 
 
@@ -187,7 +194,7 @@ class Button(ct.CTkButton):
 
 
 class LateralToolbar(ct.CTkFrame):
-    def __init__(self, master, width=300):
+    def __init__(self, master, chat_frame, width=300):
         super().__init__(master, width=width)
 
         #empecher le redimensionnement
@@ -195,9 +202,9 @@ class LateralToolbar(ct.CTkFrame):
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
-        self.buttons_frame = ButtonFrame(self)
+        self.buttons_frame = ButtonFrame(self,chat_frame)
         self.buttons_frame.grid(row=0, column=0, sticky="nsew")
-        self.img = ImageFrame(self, os.path.join(ROUTES["views/lilith"], "lilith_v1.png"), width=500, height=520, corner_radius=15)
+        self.img = ImageFrame(self, os.path.join(ROUTES["views/lilith"], "zoe_kpop.jpg"), width=500, height=520, corner_radius=15)
         self.img.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
 class App(ct.CTk):
@@ -219,10 +226,6 @@ class App(ct.CTk):
         self.main_frame.grid_columnconfigure(1, weight=1)  # Colonne principale
         self.main_frame.grid_rowconfigure(0, weight=1)  # Ligne du chat
 
-        # Barre d'outils latérale
-        self.lateral_toolbar = LateralToolbar(self.main_frame)
-        self.lateral_toolbar.grid(row=0, column=0, padx=5, pady=5, sticky="nsw")
-
         # Frame pour le chat et l'input
         self.chat_input_frame = ct.CTkFrame(self.main_frame, fg_color="transparent")
         self.chat_input_frame.grid(row=0, column=1, sticky="nsew")
@@ -233,6 +236,10 @@ class App(ct.CTk):
         # Zone de chat
         self.chat_frame = ChatFrame(self.chat_input_frame)
         self.chat_frame.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
+
+        # Barre d'outils latérale
+        self.lateral_toolbar = LateralToolbar(self.main_frame,self.chat_frame)
+        self.lateral_toolbar.grid(row=0, column=0, padx=5, pady=5, sticky="nsw")
 
         # Message de bienvenue
         self.chat_frame.add_lilith_message("Bonjour Tetsuya, que veux tu faire aujourd'hui ?")
