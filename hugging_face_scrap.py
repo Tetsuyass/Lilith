@@ -26,7 +26,7 @@ model_name = 'mistral-7B'
 model = AutoModelForCausalLM.from_pretrained(model_name)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-save_directory = "D:/1TRAVAIL/IA/models/mistral7b_finetuned"
+save_directory = "D:/1TRAVAIL/IA/models/mistral7b"
 
 logging.info('Ecriture sur disque...')
 logging.info('Traitement du modèle : Mistral-7B...')
