@@ -4,6 +4,8 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from routes import ROUTES
 
+#test comment
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 logging.info('Début du téléchargement des datasets...')
@@ -40,3 +42,4 @@ model.save_pretrained(save_directory,max_shard_size="2GB",safe_serialization=Tru
 logging.info('Traitement du tokenizer...')
 # Sauvegarde du tokenizer
 tokenizer.save_pretrained(save_directory)
+
