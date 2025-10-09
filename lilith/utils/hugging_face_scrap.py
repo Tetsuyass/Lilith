@@ -2,6 +2,7 @@ from datasets import load_dataset
 import logging
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from routes import ROUTES
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -15,11 +16,11 @@ comparia_conversations = load_dataset("ministere-culture/comparia-conversations"
 
 logging.info('Ecriture sur disque...')
 logging.info('CFDD...')
-claire_french_dialogue.save_to_disk("D:/1TRAVAIL/IA/datasets/CFDD")
+claire_french_dialogue.save_to_disk(ROUTES["hd-datasets"] + "/CFDD")
 logging.info('Everyday Conversations...')
-everyday_conversation.save_to_disk("D:/1TRAVAIL/IA/datasets/EverydayConversations")
+everyday_conversation.save_to_disk(ROUTES["hd-datasets"] + "/EverydayConversations")
 logging.info('Comparia Conversations...')
-comparia_conversations.save_to_disk("D:/1TRAVAIL/IA/datasets/Comparia")
+comparia_conversations.save_to_disk(ROUTES["hd-datasets"] + "/Comparia")
 
 logging.info('Début du téléchargement des modèles...')
 logging.info('Mistral-7B...')
@@ -30,7 +31,7 @@ model = AutoModelForCausalLM.from_pretrained(
     device_map="cuda")
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-save_directory = "D:/1TRAVAIL/IA/models/mistral7b"
+save_directory = ROUTES["hd-models"] + "/mistral7b"
 
 logging.info('Ecriture sur disque...')
 logging.info('Traitement du modèle : Mistral-7B...')
