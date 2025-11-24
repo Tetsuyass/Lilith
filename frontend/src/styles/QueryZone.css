@@ -1,0 +1,25 @@
+.query-zone {
+    display: flex;
+    padding: 10px;
+    background-color: #40444b; /* gris moyen */
+    border-top: 1px solid #292b2f;
+}
+
+.query-zone input {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    background-color: #303339; /* un peu plus foncé */
+    color: #fff;
+    font-size: 0.95rem;
+}
+
+.query-zone input::placeholder {
+    color: #b9bbbe;
+}
+
+.query-zone input:focus {
+    box-shadow: 0 0 0 2px #7289da; /* halo bleu Discord */
+}

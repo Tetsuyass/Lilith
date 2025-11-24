@@ -1,0 +1,40 @@
+.history-item-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 14px;
+  border-radius: 8px;
+
+  background: #303339;
+
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.history-item-description {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.history-item-delete {
+  background: #303339;
+  border: none;
+  color: white;
+
+  padding: 4px 10px;
+  border-radius: 6px;
+
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.history-item-delete:hover {
+  background: #434242;
+}
+
+.history-item-delete:active {
+  transform: scale(0.95);
+}

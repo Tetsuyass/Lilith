@@ -1,0 +1,13 @@
+.chat-window {
+    width: 1104px;           /* largeur fixe */
+    height: 737px;          /* hauteur totale */
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #000000;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #2f3136; /* gris foncé type Discord */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}

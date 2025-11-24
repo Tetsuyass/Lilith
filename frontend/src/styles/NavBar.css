@@ -1,0 +1,41 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 16px;
+  background: #202225;
+
+  font-family: Arial, sans-serif;
+}
+
+/* ---------- LEFT: icons side by side ----------- */
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* espace entre les deux icônes */
+}
+
+.icon {
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+}
+
+/* ---------- CENTER: app name ----------- */
+
+.app-name {
+  font-family: "Copperplate Gothic Bold", "Copperplate Gothic Light", "monospace";
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ---------- RIGHT: version ----------- */
+
+.version {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+}
