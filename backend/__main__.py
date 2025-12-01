@@ -2,17 +2,17 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from .lilith import lilith_process_answer
-from .lilith import Core
 from .lilith.pushing_data import push_data
 from .lilith.load_data import getting_data
-from routes import LILITH_CONFIG_PATH
-import json
-
-# Initialisation de Lilith
-lilith_core = Core()
+from .lilith import lilith_core
 
 # Initialisation FastAPI
 app = FastAPI()
+
+# On aura besoin d'avoir l'username pour la session sûrement depuis une fenêtre de connexion
+# On peut aussi implémenter un bouton "Reter connecté" pour garder le fichier de session.
+# TODO : Penser à mettre ce bouton sur le frontend
+username = ""
 
 origins = [
     "http://localhost:5173",  # Default Vite React dev server
@@ -40,21 +40,19 @@ async def read_root():
 
 @app.on_event("startup")
 async def load_model():
-    global lilith_core
     if lilith_core.pipe is None:
-        print("Loading lilith core")
+        print("Loading lilith core...")
         lilith_core.__start__()
-
-
-with open(LILITH_CONFIG_PATH, "r") as f:
-    config_lilith = json.load(f)
-    user_username = config_lilith["basic-config"]["user"]
+    print("Building session...")
+    lilith_core.build_session_file(username)
+    from backend.lilith.auth import current_session
+    current_session.start()
 
 
 @app.post("/newchat")
 async def create_convo():
     """Endpoint to create convo"""
-    id_user = getting_data(conn_db=lilith_core.conn_db, user_username=user_username, action="user_id")
+    id_user = getting_data(conn_db=lilith_core.conn_db, user_username=username, action="user_id")
     push_data(conn_db=lilith_core.conn_db, user_id=id_user, action="user_id")
 
 
@@ -70,5 +68,5 @@ async def chat_with_lilith(chat: ChatInput):
 
 @app.get("/history")
 async def get_history():
-    output = getting_data(conn_db=lilith_core.conn_db, user_username=user_username)
+    output = getting_data(conn_db=lilith_core.conn_db, user_username=username, action="history")
     print(output)

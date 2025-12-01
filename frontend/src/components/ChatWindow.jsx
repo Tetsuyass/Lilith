@@ -7,6 +7,7 @@ import avatarBot from '../assets/avatars/lilith1.jpeg';
 import avatarUser from '../assets/avatars/user.jpg';
 import api from "../hooks/api.js";
 
+
 function ChatWindow() {
   const user_session_username = "Tetsuya";
   const [messages, setMessages] = useState([

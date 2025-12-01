@@ -1,7 +1,8 @@
 import sqlalchemy as db
+import bcrypt
 
 
-def push_data(conn_db, action: str, user_id: int, data: dict | None = None):
+def push_data(conn_db, action: str, user_id: int | None = None, data: dict | None = None):
     """
     Push les messages de la conversation contenus dans data.
 
@@ -54,6 +55,14 @@ def push_data(conn_db, action: str, user_id: int, data: dict | None = None):
         conn_db.execute(query, payload)
         conn_db.commit()
 
+    def push_new_user():
+        query = db.text("INSERT INTO users (username, password_hash) VALUES (:username, :password_hash)")
+        password_hash = data["password"].encode("utf-8")
+        hashed = bcrypt.hashpw(password_hash, bcrypt.gensalt())
+        payload = {"username": data["username"], "password_hash": hashed}
+        conn_db.execute(query, payload)
+        conn_db.commit()
+
     match action:
         case "create_conversation":
             conv_id = push_conversation()
@@ -61,6 +70,10 @@ def push_data(conn_db, action: str, user_id: int, data: dict | None = None):
 
         case "push_conversation":
             push_conversation_messages()
+            return {"status": "db_committed"}
+
+        case "push_new_user":
+            push_new_user()
             return {"status": "db_committed"}
 
         case _:

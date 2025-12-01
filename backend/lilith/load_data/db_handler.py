@@ -28,8 +28,23 @@ def getting_data(conn_db: Any, user_username: str, action: str = "history") -> A
             
         """)
 
+    def get_session_data():
+        query = db.text("""
+        SELECT
+        users.id_user,
+        users.username,
+        users.role
+        FROM users WHERE users.username = :username;
+        """)
+
+        result = conn_db.execute(query, {"username": user_username})
+        data = [dict(row._mapping) for row in result.fetchall()]
+        return data
+
     match action:
         case "history":
             getting_history()
         case "user_id":
             getting_user_id()
+        case "session_data":
+            get_session_data()
