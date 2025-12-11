@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import '../styles/QueryZone.css';
+import envoyerIcon from '../assets/envoyer.png';
 
 function QueryZone({ onSend }) {
   const [query, setQuery] = useState('');
 
+  const sendMessage = () => {
+    if (query.trim() === '') return;  // n'envoie pas les messages vides
+
+    onSend(query);   // envoie le message au parent
+    setQuery('');    // vide le champ
+  };
+
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && query.trim() !== '') {
-      onSend(query);   // envoie le message au parent
-      setQuery('');    // vide l'input
+    if (e.key === 'Enter') {
+      sendMessage();
     }
   };
 
@@ -21,6 +28,9 @@ function QueryZone({ onSend }) {
         onKeyDown={handleKeyDown}
         placeholder="Tape ton message..."
       />
+      <button onClick={sendMessage} className="query-submit-button">
+        <img src={envoyerIcon} alt="Envoyer" />
+      </button>
     </div>
   );
 }

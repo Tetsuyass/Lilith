@@ -1,0 +1,127 @@
+:root {
+    --bg-dark: #1a1b1e;
+    --bg-darker: #111214;
+    --bg-panel: #18191c;
+
+    --bg-input: #2a2c31;
+    --bg-input-focus: #32343a;
+
+    --text-primary: #e3e3e3;
+    --text-muted: #8d8d8d;
+
+    --accent: #2f2f32;
+    --accent-hover: #3a3a3d;
+
+    --border: #0d0d0e;
+    --radius: 10px;
+    --transition: 0.2s ease;
+
+    background-color: var(--bg-dark);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-primary);
+}
+
+/* Center full page */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: var(--bg-dark);
+}
+
+/* ---------------------------- */
+/* CARD / WRAPPER               */
+/* ---------------------------- */
+
+.login-form-wrapper {
+    width: 360px;
+    padding: 32px 38px;
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    text-align: center;
+}
+
+/* Title */
+.login-form-wrapper-title {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Form layout */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* ---------------------------- */
+/* INPUTS                       */
+/* ---------------------------- */
+
+.input-field {
+    width: 92%;
+    padding: 11px 14px;
+    font-size: 15px;
+    border-radius: var(--radius);
+
+    border: 1px solid #141416;
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+
+    outline: none;
+    transition: var(--transition);
+}
+
+.input-field::placeholder {
+    color: var(--text-muted);
+}
+
+.input-field:focus {
+    background-color: var(--bg-input-focus);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(47, 47, 50, 0.4);
+}
+
+/* ---------------------------- */
+/* BUTTONS (Unified style)      */
+/* ---------------------------- */
+
+.submit-button,
+.newaccount-button {
+    background: none;     /* pas de fond */
+    border: none;         /* aucun contour */
+    outline: none;
+    cursor: pointer;
+
+    padding: 8px 0;       /* compact */
+    width: 100%;
+
+    color: var(--text-primary);
+    font-size: 15px;
+    font-weight: 600;
+
+    transition:
+        color var(--transition),
+        transform var(--transition),
+        text-shadow var(--transition);
+}
+
+/* Effet glow + léger zoom */
+.submit-button:hover,
+.newaccount-button:hover {
+    color: var(--text-primary);
+    transform: scale(1.07);
+}
+
+.submit-button:active,
+.newaccount-button:active {
+    transform: scale(0.96);
+}
