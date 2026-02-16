@@ -6,7 +6,7 @@ from .lilith.pushing_data import push_data
 from .lilith.load_data import getting_data
 from .lilith import lilith_core
 from .lilith.auth import register_new_user
-import handle_errors as errors
+from .handle_errors import *
 
 # Initialisation FastAPI
 app = FastAPI()
@@ -16,8 +16,8 @@ app = FastAPI()
 # TODO : Penser à mettre ce bouton sur le frontend
 
 origins = [
-    "http://localhost:5173",  # Default Vite React dev server
-    "http://localhost:3000",  # Common Create React App dev server
+    "http://localhost:5173",
+    "http://localhost:3000",
 ]
 
 

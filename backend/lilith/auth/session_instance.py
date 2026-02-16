@@ -1,4 +1,4 @@
-from session_handler import Session
+from .session_handler import Session
 
 current_session = Session()
 
