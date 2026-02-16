@@ -1,13 +1,28 @@
 .chat-window {
-    width: 1104px;           /* largeur fixe */
-    height: 737px;          /* hauteur totale */
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    border: 1px solid #000000;
-    border-radius: 12px;
-    overflow: hidden;
-    background-color: #2f3136; /* gris foncé type Discord */
+
+    background-color: #2f3136;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #fff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+
+    /* Important : permet aux éléments flottants de déborder */
+    position: relative;
+    overflow: visible;
+}
+
+/* Responsive - tablettes */
+@media (max-width: 1024px) {
+    .chat-window {
+        height: 100%;
+    }
+}
+
+/* Responsive - mobiles */
+@media (max-width: 768px) {
+    .chat-window {
+        height: 100%;
+    }
 }
