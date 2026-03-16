@@ -1,88 +1,116 @@
-import {useNavigate} from "react-router-dom";
-import React, {useState} from "react";
+import { useNavigate } from "react-router-dom";
+import React, { useState, useLayoutEffect } from "react";
 import axios from "axios";
+import mascotte from './assets/avatars/avatar_idea_1.png'
 import './styles/LoginForm.css'
+import NavBarLogin from "./components/NavBarLogin.jsx";
 
 export default function NewAccount() {
-  const navigate = useNavigate();
-  const [username, setUsername] = useState("");
-  const [password_hash, setPasswordHash] = useState("");
-  const [pssw_verif, setPsswVerif] = useState("");
-  const [error, setError] = useState("");
+    const navigate = useNavigate();
+    const [username, setUsername] = useState("");
+    const [password_hash, setPasswordHash] = useState("");
+    const [pssw_verif, setPsswVerif] = useState("");
+    const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+    useLayoutEffect(() => {
+        document.body.style.overflow = "hidden";
+        return () => { document.body.style.overflow = ""; };
+    }, []);
 
-    if (password_hash !== pssw_verif) {
-      setError("Les mots de passe ne correspondent pas.");
-      return;
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError("");
 
-    try {
-      // Vérifier si le username existe déjà
-      const check = await axios.post("http://127.0.0.1:8000/check_creds", {
-        username,
-      });
+        if (password_hash !== pssw_verif) {
+            setError("Les mots de passe ne correspondent pas.");
+            return;
+        }
 
-      if (check.data.exists === true) {
-        setError("Ce nom d'utilisateur est déjà utilisé.");
-        return;
-      }
+        try {
+            const check = await axios.post("http://127.0.0.1:8000/check_creds", { username });
 
-      // Création du compte
-      const res = await axios.post("http://127.0.0.1:8000/push_account", {
-        username,
-        password_hash,
-      });
+            if (check.data.exists === true) {
+                setError("Ce nom d'utilisateur est déjà utilisé.");
+                return;
+            }
 
-      if (res.data.validate === true) {
-        navigate("/login");
-      }
+            const res = await axios.post("http://127.0.0.1:8000/push_account", {
+                username,
+                password_hash,
+            });
 
-    } catch (err) {
-      setError(err.response?.data?.detail || "Erreur serveur.");
-    }
-  };
+            if (res.data.validate === true) {
+                navigate("/login");
+            }
+        } catch (err) {
+            setError(err.response?.data?.detail || "Erreur serveur.");
+        }
+    };
 
-  return (
-    <div className="login-form-wrapper">
-      <h2 className="login-form-wrapper-title">Créer un compte</h2>
+    const goBack = (e) => {
+        e.preventDefault();
+        navigate("/");
+    };
 
-      <form onSubmit={handleSubmit} className="login-form">
-        <input
-          className="input-field"
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
+    const confidentialityPolicy = async (e) => {
+        e.preventDefault();
+        navigate("#");
+    };
 
-        <input
-          className="input-field"
-          type="password"
-          placeholder="Mot de passe"
-          value={password_hash}
-          onChange={(e) => setPasswordHash(e.target.value)}
-          required
-        />
+    return (
+        <div className="page-wrapper">
+            {/* LEFT — Mascotte */}
+            <div className="left-part-wrapper">
+                <div className="pixel-bubble">
+                    <span>Oh, une nouvelle tête. J'espère que tu vaux mieux que les autres...</span>
+                </div>
+                <img className="logo-login" src={mascotte} alt="Lilith mascotte" />
+            </div>
 
-        <input
-          className="input-field"
-          type="password"
-          placeholder="Vérifiez votre mot de passe"
-          value={pssw_verif}
-          onChange={(e) => setPsswVerif(e.target.value)}
-          required
-        />
+            {/* RIGHT — Formulaire */}
+            <div className="login-form-wrapper">
+                <h1 className="login-title">Rejoins<br />Lilith.</h1>
+                <form onSubmit={handleSubmit} className="login-form">
+                    <input
+                        className="input-field"
+                        type="text"
+                        placeholder="Nom d'utilisateur"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
+                    <input
+                        className="input-field"
+                        type="password"
+                        placeholder="Mot de passe"
+                        value={password_hash}
+                        onChange={(e) => setPasswordHash(e.target.value)}
+                        required
+                    />
+                    <input
+                        className="input-field"
+                        type="password"
+                        placeholder="Confirmer le mot de passe"
+                        value={pssw_verif}
+                        onChange={(e) => setPsswVerif(e.target.value)}
+                        required
+                    />
+                    <button type="submit" className="submit-button">
+                        Créer mon compte
+                    </button>
+                    <button type="button" className="newaccount-button" onClick={goBack}>
+                        Déjà un compte ? Se connecter
+                    </button>
+                    <div className="legal-checkbox-wrapper">
+                        <input type="checkbox" id="legal-new-account" required/>
+                        <label htmlFor="legal-new-account">En continuant, vous reconnaissez la <a onClick={confidentialityPolicy}>Politique de Confidentialité</a> de Lilith et acceptez de recevoir occasionnellement des e-mails de mise à jour produit et promotionnels.</label>
+                    </div>
+                </form>
+                {error && <p style={{ color: "#ff6b6b", fontSize: "13px", margin: "4px 0 0" }}>{error}</p>}
+            </div>
 
-        <button type="submit" className="newaccount-button">
-          Créer mon compte
-        </button>
-      </form>
-
-      {error && <p style={{color: "red"}}>{error}</p>}
-    </div>
-  );
+          {/*TODO: Enlevez ça et mettre les boutons dans la box du form ça sera plus joli*/}
+            <NavBarLogin />
+        </div>
+    );
 }

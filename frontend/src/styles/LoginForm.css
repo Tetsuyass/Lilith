@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Syne:wght@400;600;800&display=swap');
+
 :root {
     --bg-dark: #1a1b1e;
     --bg-darker: #111214;
-    --bg-panel: #18191c;
+    --bg-panel: rgba(18, 19, 22, 0.82);
 
     --bg-input: #2a2c31;
     --bg-input-focus: #32343a;
@@ -12,70 +14,181 @@
     --accent: #2f2f32;
     --accent-hover: #3a3a3d;
 
-    --border: #0d0d0e;
+    --border: rgba(255,255,255,0.06);
     --radius: 10px;
     --transition: 0.2s ease;
-
-    background-color: var(--bg-dark);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--text-primary);
 }
 
-/* Center full page */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: hidden;
     margin: 0;
+    font-family: 'Syne', sans-serif;
+    color: var(--text-primary);
     background-color: var(--bg-dark);
 }
 
-/* ---------------------------- */
-/* CARD / WRAPPER               */
-/* ---------------------------- */
+/* ==============================
+   PAGE WRAPPER — layout principal
+   ============================== */
+
+.page-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    height: 100vh;
+    overflow: hidden;
+    background-image: url("../assets/background_idea.png");
+    background-size: cover;
+    background-position: center;
+}
+
+/* ==============================
+   LEFT PART — mascotte + bulle
+   ============================== */
+
+.left-part-wrapper {
+    position: relative;
+    display: flex;
+    align-items: flex-end;       /* mascotte collée en bas */
+    justify-content: center;
+    padding-bottom: 0;
+    overflow: hidden;
+}
+
+.logo-login {
+    /* occupe toute la hauteur dispo sans déborder */
+    height: 92vh;
+    max-height: 92vh;
+    width: auto;
+    object-fit: contain;
+    object-position: bottom center;
+    display: block;
+    filter: drop-shadow(0 0 40px rgba(0,0,0,0.6));
+    animation: mascotteIn 0.7s cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes mascotteIn {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ==============================
+   PIXEL BUBBLE
+   ============================== */
+
+.pixel-bubble {
+    position: absolute;
+    top: 14vh;
+    left: 50%;
+    transform: translateX(-20%);
+    z-index: 10;
+
+    background: #f0ede0;
+    color: #1a1a1a;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    line-height: 1.7;
+    padding: 14px 16px;
+    max-width: 260px;
+
+    /* Pixel border via box-shadow — style NES */
+    image-rendering: pixelated;
+    box-shadow:
+        /* bordure extérieure noire */
+        0 -4px 0 0 #1a1a1a,
+        0  4px 0 0 #1a1a1a,
+       -4px 0 0 0 #1a1a1a,
+        4px 0 0 0 #1a1a1a,
+        /* coins coupés */
+       -4px -4px 0 0 #1a1a1a,
+        4px -4px 0 0 #1a1a1a,
+       -4px  4px 0 0 #1a1a1a,
+        4px  4px 0 0 #1a1a1a;
+
+    animation: bubbleIn 0.5s 0.3s cubic-bezier(.22,1,.36,1) both;
+}
+
+/* Queue de bulle pixel */
+.pixel-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -16px;
+    left: 28px;
+
+    /* Triangle pixel-art (escalier) */
+    width: 4px; height: 4px;
+    background: #1a1a1a;
+    box-shadow:
+        4px  0px 0 #1a1a1a,
+        4px  4px 0 #f0ede0,
+        8px  4px 0 #1a1a1a,
+        8px  8px 0 #1a1a1a,
+        4px  8px 0 #1a1a1a,
+        0px  4px 0 #1a1a1a;
+}
+
+@keyframes bubbleIn {
+    from { opacity: 0; transform: translateX(-20%) scale(0.85); }
+    to   { opacity: 1; transform: translateX(-20%) scale(1); }
+}
+
+/* ==============================
+   RIGHT PART — formulaire
+   ============================== */
 
 .login-form-wrapper {
-    width: 360px;
-    padding: 32px 38px;
-    background-color: var(--bg-panel);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
-
     display: flex;
     flex-direction: column;
-    gap: 22px;
-    text-align: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 48px 40px;
+    padding-bottom: 80px; /* espace pour la navbar */
+
+    background: var(--bg-panel);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-left: 1px solid var(--border);
+
+    animation: panelIn 0.6s 0.1s cubic-bezier(.22,1,.36,1) both;
 }
 
-/* Title */
-.login-form-wrapper-title {
-    font-size: 24px;
-    font-weight: 600;
+@keyframes panelIn {
+    from { opacity: 0; transform: translateX(30px); }
+    to   { opacity: 1; transform: translateX(0); }
 }
 
-/* Form layout */
+.login-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(28px, 3vw, 38px);
+    line-height: 1.15;
+    margin: 0 0 8px;
+    letter-spacing: -0.5px;
+}
+
+/* ==============================
+   FORMULAIRE
+   ============================== */
+
 .login-form {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
 }
 
-/* ---------------------------- */
-/* INPUTS                       */
-/* ---------------------------- */
-
 .input-field {
-    width: 92%;
-    padding: 11px 14px;
-    font-size: 15px;
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-family: 'Syne', sans-serif;
     border-radius: var(--radius);
-
-    border: 1px solid #141416;
+    border: 1px solid rgba(255,255,255,0.08);
     background-color: var(--bg-input);
     color: var(--text-primary);
-
     outline: none;
     transition: var(--transition);
 }
@@ -86,42 +199,143 @@ body {
 
 .input-field:focus {
     background-color: var(--bg-input-focus);
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(47, 47, 50, 0.4);
+    border-color: rgba(255,255,255,0.2);
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.04);
 }
 
-/* ---------------------------- */
-/* BUTTONS (Unified style)      */
-/* ---------------------------- */
+/* ==============================
+   BOUTONS
+   ============================== */
 
 .submit-button,
 .newaccount-button {
-    background: none;     /* pas de fond */
-    border: none;         /* aucun contour */
-    outline: none;
-    cursor: pointer;
-
-    padding: 8px 0;       /* compact */
     width: 100%;
-
-    color: var(--text-primary);
-    font-size: 15px;
-    font-weight: 600;
-
-    transition:
-        color var(--transition),
-        transform var(--transition),
-        text-shadow var(--transition);
+    padding: 12px 0;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: transform var(--transition), opacity var(--transition);
+    outline: none;
 }
 
-/* Effet glow + léger zoom */
-.submit-button:hover,
-.newaccount-button:hover {
+.submit-button {
+    background: var(--text-primary);
+    color: #111;
+    border: none;
+}
+
+.submit-button:hover {
+    opacity: 0.88;
+    transform: scale(0.98);
+}
+
+.newaccount-button {
+    background: transparent;
     color: var(--text-primary);
-    transform: scale(1.07);
+    border: 1px solid rgba(255,255,255,0.15);
+}
+
+.newaccount-button:hover {
+    background: rgba(255,255,255,0.05);
+    transform: scale(0.98);
 }
 
 .submit-button:active,
 .newaccount-button:active {
-    transform: scale(0.96);
+    transform: scale(0.94);
+}
+
+/* ==============================
+   MENTIONS LÉGALES
+   ============================== */
+
+.legal-mention-login {
+    font-size: 11px;
+    color: #6b6b6b;
+    line-height: 1.6;
+    margin: 4px 0 0;
+}
+
+.legal-mention-login a,
+.hypertext-link {
+    color: #9c9a92;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.legal-mention-login a:hover,
+.hypertext-link:hover {
+    color: var(--text-primary);
+}
+
+/* ==============================
+   CHECKBOX LÉGALE
+   ============================== */
+
+.legal-checkbox-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+/* Cache le checkbox natif */
+.legal-checkbox-wrapper input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+
+    background-color: var(--bg-input);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition);
+    position: relative;
+}
+
+.legal-checkbox-wrapper input[type="checkbox"]:checked {
+    background-color: var(--text-primary);
+    border-color: var(--text-primary);
+}
+
+/* Checkmark */
+.legal-checkbox-wrapper input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 5px;
+    width: 4px;
+    height: 7px;
+    border: 2px solid #111;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+}
+
+.legal-checkbox-wrapper input[type="checkbox"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
+}
+
+.legal-checkbox-wrapper label {
+    font-size: 11px;
+    color: #6b6b6b;
+    line-height: 1.6;
+    cursor: pointer;
+}
+
+.legal-checkbox-wrapper label a {
+    color: #9c9a92;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.legal-checkbox-wrapper label a:hover {
+    color: var(--text-primary);
 }

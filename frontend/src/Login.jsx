@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useLayoutEffect} from 'react';
 import { useNavigate } from "react-router-dom";
+import mascotte from './assets/avatars/avatar_idea_1.png'
 import axios from 'axios';
 import './styles/LoginForm.css'
+import NavBarLogin from "./components/NavBarLogin.jsx";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -10,55 +12,71 @@ export default function Login() {
     const [error, setError] = useState("");
     const [token, setToken] = useState(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    //setError("");
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        localStorage.setItem("token", "dummy_token");
+        navigate("/app");
+    };
 
-    //try {
-      //const response = await axios.post("http://127.0.0.1:8000/login", {
-        //username,
-        //password_hash,
-      //});
+    useLayoutEffect(() => {
+        document.body.style.overflow = "hidden";
+        return () => { document.body.style.overflow = ""; };
+    }, []);
 
-      //setToken(response.data.access_token);
-    //} catch (err) {
-      //setError(err.response?.data?.detail || "Erreur serveur");
-    //}
-    localStorage.setItem("token", "dummy_token");
+    const createAccount = async (e) => {
+        e.preventDefault();
+        navigate("/create_account");
+    };
 
-    navigate("/app"); // redirection vers ta vraie App
-  };
+    const confidentialityPolicy = async (e) => {
+        e.preventDefault();
+        navigate("/#");
+    };
 
-  const createAccount = async (e) => {
-      e.preventDefault();
-      setError("");
+    return (
+        <div className="page-wrapper">
+            {/* LEFT — Mascotte collée en bas */}
+            <div className="left-part-wrapper">
+                {/* Bulle pixel art */}
+                <div className="pixel-bubble">
+                    <span>Encore toi ? À croire que tu es amoureux...</span>
+                </div>
+                <img className="logo-login" src={mascotte} alt="Lilith mascotte"/>
+            </div>
 
-      navigate("/create_account")
-  };
+            {/* RIGHT — Formulaire centré verticalement */}
+            <div className="login-form-wrapper">
+                <h1 className="login-title">L'IA pensée<br/>pour vous.</h1>
+                <form onSubmit={handleSubmit} className="login-form">
+                    <input className="input-field" type="text"
+                           placeholder="Adresse e-mail"
+                           value={username}
+                           onChange={(e) => setUsername(e.target.value)}
+                    />
+                    <input className="input-field" type="password"
+                           placeholder="Mot de passe"
+                           value={password_hash}
+                           onChange={(e) => setPasswordHash(e.target.value)}
+                    />
+                    <button type="submit" className="submit-button">
+                        Se connecter
+                    </button>
+                    <button type="button" className="newaccount-button" onClick={createAccount}>
+                        Créer un compte
+                    </button>
+                    <p className="legal-mention-login">
+                        En continuant, vous reconnaissez la{" "}
+                        <a onClick={confidentialityPolicy} className="hypertext-link">
+                            Politique de Confidentialité
+                        </a>{" "}
+                        de Lilith et acceptez de recevoir occasionnellement des e-mails de mise à jour produit et promotionnels.
+                    </p>
+                </form>
+                {error && <p style={{color: "red"}}>{error}</p>}
+                {token && <p style={{color: "green"}}>Connecté !</p>}
+            </div>
 
-  return (
-      <div className="login-form-wrapper">
-          <h2 className="login-form-wrapper-title">Connexion</h2>
-          <form onSubmit={handleSubmit} className="login-form">
-                <input className="input-field" type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                />
-                <input className="input-field" type="password"
-                placeholder="Mot de passe"
-                value={password_hash}
-                onChange={(e) => setPasswordHash(e.target.value)}
-                />
-                <button type="submit" className="submit-button">
-                Se connecter
-                </button>
-                <button type="button" className="newaccount-button" onClick={createAccount}>
-                    Créer un compte
-                </button>
-          </form>
-          {error && <p style={{ color: "red" }}>{error}</p>}
-          {token && <p style={{ color: "green" }}>Connecté ! Token : {token}</p>}
-      </div>
-  )
+            <NavBarLogin />
+        </div>
+    );
 }

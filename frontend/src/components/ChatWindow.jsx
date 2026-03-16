@@ -9,9 +9,9 @@ import api from "../hooks/api.js";
 
 
 function ChatWindow() {
-  const user_session_username = "Tetsuya";
+  const user_session_username = "Ismael";
   const [messages, setMessages] = useState([
-    { author: "lilith", username: "Lilith ♥", avatarUrl: avatarBot, text: "Bonjour " + user_session_username + "." }
+    { author: "lilith", username: "Lilith", avatarUrl: avatarBot, text: "Bonjour " + user_session_username + "." }
   ]);
 
 const handleSend = async (text) => {
@@ -23,7 +23,7 @@ const handleSend = async (text) => {
   ...prev,
   {
     author: "lilith",
-    username: "Lilith ♥",
+    username: "Lilith",
     avatarUrl: avatarBot,
     text: "En train d'écrire...",
     typing: true,
@@ -42,7 +42,7 @@ const handleSend = async (text) => {
     ...prev,
     {
       author: "lilith",
-      username: "Lilith ♥",
+      username: "Lilith",
       avatarUrl: avatarBot,
       text: "",
       streaming: true,
@@ -80,7 +80,7 @@ const handleSend = async (text) => {
     setMessages(prev => prev.filter(msg => !msg.typing));  //supprime l'état typing
     setMessages(prev => [
       ...prev,
-      { author: "lilith", username: "Lilith ♥", avatarUrl: avatarBot, text: "Le serveur ne répond pas, merci de réessayer ultérieurement." }
+      { author: "lilith", username: "Lilith", avatarUrl: avatarBot, text: "Le serveur ne répond pas, merci de réessayer ultérieurement." }
     ]);
   }
 };
